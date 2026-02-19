@@ -1,0 +1,239 @@
+{
+    "welcome_message": "Bienvenido a CTI Setup",
+    "components": {
+        "devices_connect": {
+            "button_search": "Buscar dispositivos",
+            "button_clear_search": "Cancelar",
+            "message_searching": "Buscando dispositivos...",
+            "message_setup_device": "Pulse el botón de configuración hasta que el LED de estado se encienda entre verde y rojo. Cuando el LED de datos moviles parpadee, pulse el botón de buscar dispositivos",
+            "message_no_devices_title": "Dispositivos CTI no encontrados",
+            "message_no_devices": "Dispositivos no encontrados, por favor, asegúrese de que el LED de datos moviles parpadee, y pulse de nuevo el botón de buscar dispositivos.",
+            "message_nowifi": "Debes habilitar WiFi para configurar dispositivos CTI",
+            "devices_list": "Dispositivos encontrados"
+        },
+        "current_wifi": {
+            "message_wifi_disabled": "WiFi deshabilitado",
+            "message_wifi_disconnected": "No hay conexión WiFi"
+        },
+        "wifi_selector": {
+            "label_ssid": "Nombre de red",
+            "label_passwd": "Contraseña",
+            "hint_ssid": "Nombre de red",
+            "hint_passwd": "Contraseña",
+            "button_show_wifis": "Escanear WiFi"
+        },
+        "list_wifi": {
+            "title": "Seleccione un WiFi",
+            "message_explain": "Puedes seleccionar a qué red quieres conectar el dispositivo"
+        },
+        "close_connection": {
+            "title": "Cerrar la conexión con el dispositivo",
+            "message_explain": "¿Estás seguro de que quieres desconectar del dispositivo?",
+            "button_exit": "Si",
+            "button_cancel": "Cancelar"
+        }
+    },
+    "screens": {
+        "find_devices": {
+            "title": "CTI Setup",
+            "message": "Bienvenido a CTI Setup",
+            "message_subtext": "Con esta aplicación puedes configurar tu dispositivo",
+            "button_to_configured_devices": "Mostrar Dispositivos Configurados",
+            "button_to_change_language": "Cambiar Idioma (ES)",
+            "premissions_needed": "CTI Setup necesita permiso para conectar al dispositivo",
+            "premissions_needed_details": "Por favor, pulse el botón Pedir Permiso y acepte el permiso para conectar al dispositivo",
+            "button_request_permission": "Pedir Permiso"
+        },
+        "setup_device": {
+            "title": "CTI Setup - Configuración",
+            "message_getting_configuration": "Obteniendo configuración de ",
+            "description": "Configuración CTI",
+            "block_device": "Acceso a CTIportal",
+            "block_connection": "Estado",
+            "label_connection": "Modo de conexión",
+            "label_no_configuration": "El dispositivo NO está configurado",
+            "label_wifi": "El dispositivo está configurado por WiFi",
+            "label_data": "El dispositivo está configurado por la tarjeta SIM",
+            "label_unknown": "Modo de conexión desconocido",
+            "label_wifi_ssid":"Nombre de red",
+            "label_wifi_ssid_passwd":"Contraseña de red",
+            "label_data_apn": "APN",
+            "label_data_user": "Usuario",
+            "label_data_passwd": "Contraseña",
+            "label_data_type": "Modo",
+            "label_data_type_auto": "AUTOMÁTICO",
+            "label_data_type_man": "MANUAL",
+            "label_mac": "Dirección MAC",
+            "label_password_device": "Contraseña del dispositivo",
+            "label_password_server": "Contraseña CTIportal",
+            "button_reload_configuration": "Recargar configuración",
+            "button_disconnect": "Desconectar",
+            "button_new_configuration": "Nueva Configuración",
+            "button_reset_configuration": "Resetear a fábrica",
+            "button_change_password": "Cambiar Contraseña del Dispositivo",
+            "button_change_language": "Cambiar Idioma (ES)",
+            "error_communication": "Se ha producido un error al conectarse con el dispositivo",
+            "button_close": "Cerrar la conexión"
+        },
+        "setup_device_wifi": {
+            "title": "CTI Setup - Configuración WiFi",
+            "title_new_configuration": "Redes WiFi",
+            "message_new_configuration": "Por favor, seleccione la red Wifi que quieres conectar el dispositivo. Debes proporcionar el SSID y la contraseña.",
+            "message_saving_wifi": "Guardando configuración...",
+            "button_save_configuration": "Guardar configuración",
+            "invalid_ssid": "SSID no puede tener más de 16 carácteres",
+            "invalid_passwd_size": "Contraseña no puede tener más de 32 carácteres",
+            "invalid_passwd_chars": "Contraseña contiene carácteres inválidos",
+            "message_loading": "Guardando nueva configuración WiFi...",
+            "message_saved_ok": "Nueva configuración guardado con éxito.",
+            "message_saved_ko": "Error al guardar la nueva configurarión, por favor, intente de nuevo",
+            "error_post_config": "Dispositivo no responde",
+            "button_validate": "Validar configuración"
+        },
+        "setup_device_data": {
+            "title": "CTI Setup - Configuración SIM",
+            "message_new_configuration": "Redes móvil 2G / 3G / 4G",
+            "label_data_type_auto": "AUTOMÁTICO",
+            "label_data_type_man": "MANUAL",
+            "message_puk": "SIM BLOQUEADO",
+            "message_need_puk": "La tarjeta SIM es bloqqueado por PUK, por favor, inserte una tarjeta SIM desbloqueada.",
+            "label_pin": "Por favor, inserte el número PIN",
+            "hint_pin": "Número PIN",
+            "button_pin": "Guardar PIN",
+            "label_tries_pin": "Número de intentos: ",
+            "label_tries_pin_failed": "Pin inválido, número de intentos: ",
+            "button_save_configuration": "Guardar configuración",
+            "message_saving": "Guardando configuración...",
+            "message_saving_pin": "Comprobando PIN...",
+            "message_auto_configuration": "Por favor, seleccione si deseas configurar en modo Manual o Automático",
+            "label_apn": "APN: ",
+            "error_apn": "APN contiene carácteres inválidos",
+            "hint_apn": "inserte apn",
+            "label_user": "Usuario: ",
+            "error_user": "Usuario contiene carácteres inválidos",
+            "hint_user": "inserte usuario",
+            "label_password": "Contraseña: ",
+            "error_password": "Contraseña contiene carácteres inválidos",
+            "hint_password": "inserte contraseña",
+            "message_saving_fails": "Error al guardar la nueva configurarión, por favor, intente de nuevo",
+            "message_find_4g": "SIM NO DETECTADO",
+            "message_no_4g": "Debes insertar una tarjeta SIM para usar una conexión de datos; si hay una tarjeta SIM, puede tomar unos segundos para cargar la configuración, por favor, espere o vuelva a la página anterior",
+            "button_close": "Cerrar"
+        },
+        "validate_configuration": {
+            "title": "CTI Setup - Verificar Configuración",
+            "label": "Comprobando la configuración",
+            "validating": "Comprobando la conexión al servidor CTIportal, por favor, espere...",
+            "done_server": "El dispositivo está transmitiendo con el servidor CTIportal, su última comunicación fue ",
+            "failed_internet": "No se puede conectar al Internet, por favor, conecta a una red válida e intente de nuevo",
+            "failed_server": "No se ha podido conectar a Internet. Para comprobar si el dispositivo está transmitiendo con el servidor CTIportal, el LED de estado debe ser verde",
+            "failed_server_tx": "El dispositivo no está comunicando con el servidor. Es posible que todavía está procesando la configuración, por favor, compruebe si el LED de estado es verde o intente de nuevo",
+            "resume_label_name": "Nombre",
+            "resume_label_mac": "Dirección MAC",
+            "resume_label_passwd": "Contraseña CTIportal",
+            "close_button": "Finalizar",
+            "retry_button": "Reintentar"
+        },
+        "configured_devices": {
+            "title": "CTI Setup - Dispositivos Configurados",
+            "message": "Últimos dispositivos configurados",
+            "loading": "Obteniendo dispositivos configurados...",
+            "no_devices": "No hay dispositivos configurados",
+            "label_mac": "Dirección MAC: ",
+            "label_passwd": "Contraseña CTIportal: ",
+            "label_date": "configurado como ",
+            "button_cancel": "Cancelar"
+        },
+        "change_device_password": {
+            "label": "Cambiar contraseña",
+            "save_ok_label": "Cambio de contraseña realizado",
+            "title": "CTI Setup - Cambio Contraseña",
+            "message": "Esta acción cambiará la contraseña de acceso a tu dispositivo; si continuas, el próximo acceso a tu dispositivo debes insertar la nueva contraseña",
+            "label_passwd": "Contraseña de acceso al dispositivo",
+            "hint_passwd": "Debe contener 8 números",
+            "label_repasswd": "Confirmar contraseña",
+            "hint_repasswd": "Vuelva a insertar la contraseña",
+            "button_change_password": "Cambiar",
+            "error_match": "Las contraseñas NO coinciden",
+            "error_min_size": "Debería contener 8 números",
+            "error_saving": "Se ha producido un error al guardar la nueva contraseña, por favor, comprueba la contraseña e intente de nuevo",
+            "saving": "Cambiando la contraseña, por favor, espere un momento",
+            "save_ok": "La contraseña se ha cambiado con éxito, el próximo acceso a tu dispositivo debes insertar la nueva contraseña",
+            "button_finish": "Finalizar",
+            "button_cancel": "Cancelar"
+        },
+        "reset_device": {
+            "title": "CTI Setup - Resetear Dispositivo",
+            "label": "Reseteo de fábrica",
+            "button_reset": "Resetear",
+            "reset": "El dispositivo será reseteado a la configuración de fábrica",
+            "reset_advise": "Todas las anteriores configuraciones se perderán y el dispositivo será reiniciado. Necesitarás volver a conectar con el dispositivo para iniciar una nueva configuración",
+            "reseting": "Reseteando... Por favor, espere hasta que todos los LEDs parpadeen en verde",
+            "error": "El reset ha fallado. Es posible que la conexión se ha perdido, por favor, comprueba el dispositivo y repite el proceso",
+            "reset_ok": "El dispositivo ha reestablecido a la configuración de fábrica, debes volver a conectar con el dispositivo para iniciar una nueva configuración",
+            "button_finish": "Finalizar",
+            "button_cancel": "Cancelar"
+        },
+        "languages": {
+            "title": "CTI Setup - Idiomas",
+            "message_languages": "Idiomas disponibles en CTI Setup",
+            "message_select": "Seleccione el idioma que deseas usar",
+            "label_en": "Inglés",
+            "label_es": "Español",
+            "button_cancel": "Cancelar"
+        },
+        "disconnect": {
+            "title": "CTI Setup - Dispositivo Desconectado",
+            "message": "Dispositivo desconectado",
+            "message_disconnect": "El dispositivo se ha desconectado a través de la aplicación",
+            "message_disconnecting": "Cerrando la conexión con el dispositivo, por favor, espere un momento...",
+            "button_close": "Finalizar"
+        },
+        "wifi_credentials": {
+            "title": "CTI Setup - Conexión con un Dispositivo",
+            "message": "Dispositivo ",
+            "button_connect": "Conectar",
+            "button_cancel": "Cancelar",
+            "input_label_password": "Contraseña",
+            "input_hint_password": "Inserte la contraseña (8 digitos)",
+            "message_connecting": "Conectando a ",
+            "error_connecting": "No se puede conectar con el dispositivo, por favor, comprueba si el LED de estado parpadea entre verde y rojo, y/o la contraseña es correcta"
+        },
+        "configuration_type_selector": {
+            "title": "CTI Setup - Tipo de Conexión",
+            "message_explain": "Seleccione un tipo de conexión",
+            "dialog_title": "Nombre de configuración",
+            "dialog_explain": "Inserte un nombre para identificar esta configuración o déjalo en blanco",
+            "input_label_name": "Nombre de configuración",
+            "input_hint_name": "Inserte un nombre o déjalo en blanco",
+            "button_ok": "Guardar",
+            "button_cancel": "Cancelar"
+        },
+        "xiaomi_perm": {
+            "title": "CTI Setup - Habilitar Permiso",
+            "message": "Habilitar permiso de WiFi",
+            "button_close": "Salir",
+            "button_perms": "Ir a permisos",
+            "forget": "No volver a mostrar",
+            "message_details1": "Para una mejor experiencia, por favor, pulse el botón \"IR A PERMISOS\"",
+            "message_details2": "Pulse la opción \"Modificar la conectividad Wi-Fi\"",
+            "message_details3": "Aceptar"
+        }
+    },
+    "permissions": {
+        "wifi": {
+            "title": "Se requiere permiso de ubicación",
+            "message": "Esta aplicación necesita permiso de ubicación para acceder a redes WiFi",
+            "deny": "Denegar",
+            "allow": "Permitir"
+        }
+    },
+    "utils": {
+        "api": {
+            "message_error": "No se puede recuperar la configuración del dispositivo, por favor, comprueba el dispositivo y su conexión",
+            "message_error_post": "No se puede guardar la configuración del dispositivo, por favor, comprueba el dispositivo y su conexión",
+            "message_internet_error": "No se puede conectar con Internet",
+            "message_server_error": "No se puede conectar con el servidor"
+        }
+    }
+}

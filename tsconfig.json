@@ -1,3 +1,12 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json"
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "include": [
+    "src/**/*",
+    "index.js",
+    "App.tsx",
+    "App.ts",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ]
 }
