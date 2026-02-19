@@ -1,124 +1,125 @@
-import { StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
+import { StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export const useStyles = () => {
     const theme = useTheme();
-
     return StyleSheet.create({
         container: {
             flex: 1,
             backgroundColor: theme.colors.background,
-            paddingBottom: 10,
+            paddingBottom: 10
         },
         nowifiTitle: {
             padding: 16,
-            textAlign: "center",
-            fontSize: 20,
-            color: theme.colors.onBackground,
+            textAlign: 'center',
+            fontSize: 20
         },
         nowifiBody: {
             flex: 1,
             margin: 16,
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: 'center',
+            justifyContent: 'center',
         },
         loadingBody: {
             flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: 'center',
+            justifyContent: 'center'
         },
         nowifiBodyTitle: {
             padding: 16,
             fontSize: 22,
-            textAlign: "center",
-            color: theme.colors.onBackground,
+            textAlign: 'center',
         },
         connectingBodyTitle: {
             marginTop: 18,
-            color: theme.colors.onBackground,
-            fontSize: 18,
+            color: theme.colors.text,
+            fontSize: 18
         },
         setupContainer: {
             flex: 1,
             margin: 16,
-            alignItems: "center",
+            alignItems: 'center'
         },
         setupDevice: {
             padding: 12,
             fontSize: 24,
-            color: theme.colors.primary, // ✅ antes ctiGreen
-            textAlign: "center",
+            color: theme.colors.ctiGreen,
+            textAlign: 'center',
         },
         setupDeviceSubtext: {
             fontSize: 16,
-            color: theme.colors.onBackground, // ✅ antes text
-            textAlign: "center",
+            color: theme.colors.text,
+            textAlign: 'center',
         },
         setupDeviceInfo: {
             padding: 12,
             fontSize: 18,
             margin: 12,
-            color: theme.colors.onSurfaceVariant,       // ✅ texto encima del fondo
-            textAlign: "center",
-            backgroundColor: theme.colors.surfaceVariant, // ✅ antes ctiBlueGrey
+            color: theme.colors.text,
+            textAlign: 'center',
+            backgroundColor: theme.colors.ctiBlueGrey
         },
         connectCard: {
-            margin: 16,
+            margin: 16
         },
         connectTitle: {
-            color: theme.colors.primary,
+            color: theme.colors.primary
         },
         inputPassword: {
-            backgroundColor: theme.colors.surface,
-            color: theme.colors.onSurface,
-            fontSize: 22,
+            backgroundColor: 'white',
+            color: 'black',
+            fontSize: 22
         },
         errorMessage: {
             marginStart: 24,
             marginEnd: 24,
             padding: 6,
-            backgroundColor: theme.colors.error,
+            backgroundColor: theme.colors.error
         },
-        errorMessageText: {
-            color: theme.colors.onError,
-        },
+        errorMessageText: {},
         buttonText: {
-            color: theme.colors.onPrimary,
-            fontSize: 18,
+            color: theme.colors.primary,
+            fontSize: 18
+        },
+        bodyListDevice: {
         },
         bodyListDeviceRow: {
             flex: 1,
             marginLeft: 12,
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: 'row',
+            alignItems: 'center'
         },
         bodyListDeviceItem: {
             flex: 1,
             marginLeft: 32,
             marginTop: 16,
             borderBottomWidth: 1,
-            borderBottomColor: theme.colors.primary, // ✅ antes ctiGreen
+            borderBottomColor: theme.colors.ctiGreen,
         },
         bodyListDeviceItemText: {
             fontSize: 20,
-            fontWeight: "700",
+            fontWeight: '700',
             marginBottom: 16,
-            color: theme.colors.onBackground,
-        },
-        bodyListDevice: {
         },
         searchButton: {
             width: 200,
-            height: 200,
+            height: 200
         },
         buttonSearch: {
             margin: 32,
             width: 200,
-            height: 200,
+            height: 200
         },
         button: {
-            margin: 16,
+            margin: 16
         },
+        buttonLabel: {
+            marginTop: 8,
+            fontSize: 16,
+            color: theme.colors.text,
+            textAlign: 'center',
+        }
+
     });
 };
 

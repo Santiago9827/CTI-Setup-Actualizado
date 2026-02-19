@@ -100,15 +100,18 @@ export const DevicesList: React.FC<DeviceListProps> = ({ devices, searching, app
                 <View style={styles.setupContainer}>
                     <Text style={styles.setupDevice}>{t('screens.find_devices.message')}</Text>
                     <Text style={styles.setupDeviceSubtext}>{t('screens.find_devices.message_subtext')}</Text>
-                    <Button
-                        style={styles.buttonSearch}
-                        mode="contained"
-                        onPress={scanDevices}
-                        disabled={searching || !appConfig.wifiConnection.enabled || !appConfig.wifiPermissions}
-                        icon={() => <Image source={SearchButton} style={styles.searchButton} />}
-                    >
-                        {t('components.devices_connect.button_search')}
-                    </Button>
+                    <View style={{ alignItems: 'center' }}>
+                        <IconButton
+                            style={styles.buttonSearch}
+                            icon={() => <Image source={SearchButton} style={styles.searchButton} />}
+                            disabled={searching || !appConfig.wifiConnection.enabled || !appConfig.wifiPermissions}
+                            onPress={scanDevices}
+                        />
+                        <Text style={styles.buttonLabel}>
+                            {t('components.devices_connect.button_search')}
+                        </Text>
+                    </View>
+
 
                 </View>
                 <Text style={styles.setupDeviceInfo}>{t('components.devices_connect.message_setup_device')}</Text>

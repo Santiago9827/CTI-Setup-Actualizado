@@ -36,6 +36,7 @@ import WifiCredentialsScreen from './wifi-credentials-screen';
 import ConfigurationTypeSelectorScreen from './configuration-type-selector-screen';
 import XiaomiPermissionsScreen from './xiaomi-permissions-screen';
 
+
 const RootStack = createStackNavigator<RootStakParams>();
 
 const BackButton: React.FC<{ show: boolean; action: () => void }> = ({ show, action }) => {
@@ -47,9 +48,9 @@ const MainHeader: React.FC<StackHeaderProps> = ({ navigation, route, options, ba
     const title = options.title ?? 'CTI Setup';
 
     return (
-        <Appbar.Header>
+        <Appbar.Header style={{ backgroundColor: '#17314C' }}>
             <BackButton show={!!back} action={() => navigation.goBack()} />
-            <Appbar.Content title={title} />
+            <Appbar.Content title={title} titleStyle={{ color: 'white' }} />
         </Appbar.Header>
     );
 };
@@ -60,16 +61,16 @@ const FindHeader: React.FC<StackHeaderProps> = ({ navigation, options, back }) =
     const [isMenuOpen, setMenuOpen] = React.useState(false);
 
     return (
-        <Appbar.Header>
+        <Appbar.Header style={{ backgroundColor: '#17314C' }}>
             <BackButton show={!!back} action={() => navigation.goBack()} />
-            <Appbar.Content title={title} />
+            <Appbar.Content title={title} titleStyle={{ color: 'white' }} />
 
             <Menu
                 visible={isMenuOpen}
                 onDismiss={() => setMenuOpen(false)}
                 anchor={
                     <Appbar.Action
-                        icon="dots-vertical"
+                        icon="more-vert"
                         iconColor="white"
                         onPress={() => setMenuOpen(true)}
                     />
@@ -99,8 +100,8 @@ const FindHeader: React.FC<StackHeaderProps> = ({ navigation, options, back }) =
 const NoReturnHeader: React.FC<StackHeaderProps> = ({ options }) => {
     const title = options.title ?? 'CTI Setup';
     return (
-        <Appbar.Header>
-            <Appbar.Content title={title} />
+        <Appbar.Header style={{ backgroundColor: '#17314C' }}>
+            <Appbar.Content title={title} titleStyle={{ color: 'white' }} />
         </Appbar.Header>
     );
 };
