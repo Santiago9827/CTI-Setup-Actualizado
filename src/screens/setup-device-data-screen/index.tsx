@@ -18,7 +18,8 @@ import {
     generate4GManualBody,
     useUpdateConfig,
     useGetConfig,
-    ResponseState
+    ResponseState,
+    DeviceConfig
 } from '../../utils/device-api';
 import {
     VALIDATE_CONFIGURATION_SCREEN,
@@ -26,13 +27,12 @@ import {
     DISCONNECT_SCREEN,
     RootStakParams
 } from '../constants';
-import { DeviceConfig } from 'src/utils/device-api';
-import {StackScreenProps} from '@react-navigation/stack';
-import {useLocale} from '../../locales';
-import {useStyles} from './styles';
-import {isASCII} from '../../utils/formats';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useLocale } from '../../locales';
+import { useStyles } from './styles';
+import { isASCII } from '../../utils/formats';
 import LoadingView from '../../components/loading-view';
-import {ErrorView} from '../setup-device-screen';
+import { ErrorView } from '../setup-device-screen';
 import Theme from '../../theme';
 
 const PukImg = require('../../images/puk.png');
@@ -41,16 +41,16 @@ export type SavingIndicatorProps = {
     show: boolean;
     message: string;
 };
-export const SavingIndicator: React.FC<SavingIndicatorProps> = ({show, message}) => {
+export const SavingIndicator: React.FC<SavingIndicatorProps> = ({ show, message }) => {
     if (!show) return null;
-    return (<LoadingView show={show} message={message}/>);
+    return (<LoadingView show={show} message={message} />);
 };
 
 export type ErrorIndicatorProps = {
     show: boolean;
     message?: string;
 };
-export const ErrorIndicator: React.FC<ErrorIndicatorProps> = ({show, message}) => {
+export const ErrorIndicator: React.FC<ErrorIndicatorProps> = ({ show, message }) => {
     if (!show || !message) return null;
     return (
         <View>
@@ -65,10 +65,10 @@ export type NoSIMViewProps = {
     closeConnection: () => void;
     closeScreen: () => void;
 };
-export const NoSIMView: React.FC<NoSIMViewProps> = ({device, updateDevice, closeConnection, closeScreen}) => {
-    const {t} = useLocale();
+export const NoSIMView: React.FC<NoSIMViewProps> = ({ device, updateDevice, closeConnection, closeScreen }) => {
+    const { t } = useLocale();
     const styles = useStyles();
-    const {state, request} = useGetConfig();
+    const { state, request } = useGetConfig();
     React.useEffect(() => {
         if (device.estado_SIM === 0 && !state.error) setTimeout(request, 2500);
     }, [device]);
@@ -82,14 +82,14 @@ export const NoSIMView: React.FC<NoSIMViewProps> = ({device, updateDevice, close
         return (
             <ErrorView
                 error={!!state.error}
-                close={closeConnection}/>
+                close={closeConnection} />
         );
     }
     return (
         <View style={styles.container}>
             <View style={styles.pukContainer}>
                 <Text style={styles.pukLabel}>{t('screens.setup_device_data.message_find_4g')}</Text>
-                <ActivityIndicator size={120} color={Theme.colors.ctiGreen}/>
+                <ActivityIndicator size={120} color={Theme.colors.ctiGreen} />
                 <Text style={styles.pukMessage}>{t('screens.setup_device_data.message_no_4g')}</Text>
                 <Button
                     style={styles.closeButton}
@@ -112,8 +112,8 @@ export type PinBoxProps = {
     savePin: () => void;
     tries: number;
 };
-export const PinBox: React.FC<PinBoxProps> = ({show, loading, pin, setPinNumber, savePin, tries, pinError}) => {
-    const {t} = useLocale();
+export const PinBox: React.FC<PinBoxProps> = ({ show, loading, pin, setPinNumber, savePin, tries, pinError }) => {
+    const { t } = useLocale();
     const styles = useStyles();
     if (!show) return null;
     return (
@@ -121,7 +121,7 @@ export const PinBox: React.FC<PinBoxProps> = ({show, loading, pin, setPinNumber,
             <KeyboardAvoidingView style={styles.pinContainer}>
                 <Text style={loading ? styles.pinLabelDisabled : styles.pinLabel}>{t('screens.setup_device_data.label_pin')}</Text>
                 <TextInput
-                    theme={{colors: {primary: Theme.colors.ctiGreen, placeholder: Theme.colors.ctiGreen}}}
+                    theme={{ colors: { primary: Theme.colors.ctiGreen, placeholder: Theme.colors.ctiGreen } }}
                     value={pin}
                     disabled={loading}
                     style={styles.pinInput}
@@ -131,7 +131,7 @@ export const PinBox: React.FC<PinBoxProps> = ({show, loading, pin, setPinNumber,
                     keyboardType='number-pad'
                     secureTextEntry={true}
                     maxLength={4}
-                    onChangeText={(text) => setPinNumber(text.slice(0, 4))}/>
+                    onChangeText={(text) => setPinNumber(text.slice(0, 4))} />
                 <Text style={tries < 2 ? styles.tryLabel1 : (tries < 3 ? styles.tryLabel2 : styles.tryLabel)}>
                     {pinError ? t('screens.setup_device_data.label_tries_pin_failed') : t('screens.setup_device_data.label_tries_pin')} {tries}
                 </Text>
@@ -153,10 +153,10 @@ export type PinViewProps = {
     closeConnection: () => void;
     closeScreen: () => void;
 };
-export const PinView: React.FC<PinViewProps> = ({device, updateDevice, closeConnection, closeScreen}) => {
-    const {t} = useLocale();
+export const PinView: React.FC<PinViewProps> = ({ device, updateDevice, closeConnection, closeScreen }) => {
+    const { t } = useLocale();
     const styles = useStyles();
-    const {request, state} = useUpdateConfig();
+    const { request, state } = useUpdateConfig();
     const newConfig = state.response?.body;
     const errorConfig = state.response?.status === 400;
     const [pinNumber, setPinNumber] = React.useState('');
@@ -176,7 +176,7 @@ export const PinView: React.FC<PinViewProps> = ({device, updateDevice, closeConn
             <View style={styles.container}>
                 <View style={styles.pukContainer}>
                     <Text style={styles.pukLabel}>{t('screens.setup_device_data.message_puk')}</Text>
-                    <Image source={PukImg} style={styles.pukImage} resizeMode='contain'/>
+                    <Image source={PukImg} style={styles.pukImage} resizeMode='contain' />
                     <Text style={styles.pukMessage}>{t('screens.setup_device_data.message_need_puk')}</Text>
                     <Button
                         style={styles.closeButton}
@@ -199,13 +199,13 @@ export const PinView: React.FC<PinViewProps> = ({device, updateDevice, closeConn
                 setPinNumber={setPinNumber}
                 savePin={savePin}
                 pinError={errorConfig}
-                tries={device.intentos_PIN}/>
+                tries={device.intentos_PIN} />
             <SavingIndicator
                 show={state.isLoading}
-                message={t('screens.setup_device_data.message_saving_pin')}/>
+                message={t('screens.setup_device_data.message_saving_pin')} />
             <ErrorView
                 error={!!state.error}
-                close={closeConnection}/>
+                close={closeConnection} />
         </>
     );
 };
@@ -214,15 +214,15 @@ export type ConfigAPNViewProps = {
     device: DeviceConfig;
     onChange: (device: DeviceConfig) => void;
 };
-export const ConfigAPNView: React.FC<ConfigAPNViewProps> = ({device, onChange}) => {
-    const {t} = useLocale();
+export const ConfigAPNView: React.FC<ConfigAPNViewProps> = ({ device, onChange }) => {
+    const { t } = useLocale();
     const styles = useStyles();
     if (device.auto_man !== 1) return null;
     return (
         <>
             <KeyboardAvoidingView behavior='padding' style={styles.apnContainer}>
                 <TextInput
-                    theme={{colors: {primary: Theme.colors.ctiGreen, placeholder: Theme.colors.ctiGreen}}}
+                    theme={{ colors: { primary: Theme.colors.ctiGreen, placeholder: Theme.colors.ctiGreen } }}
                     style={styles.apnInput}
                     mode='outlined'
                     value={device.man_APN}
@@ -231,12 +231,12 @@ export const ConfigAPNView: React.FC<ConfigAPNViewProps> = ({device, onChange}) 
                     maxLength={48}
                     autoCapitalize='none'
                     error={!isASCII(device.man_APN, false)}
-                    onChangeText={(text) => onChange({...device, man_APN: text})}/>
-                { !isASCII(device.man_APN, false) && <Text>{t('screens.setup_device_data.error_apn')}</Text>}
+                    onChangeText={(text) => onChange({ ...device, man_APN: text })} />
+                {!isASCII(device.man_APN, false) && <Text>{t('screens.setup_device_data.error_apn')}</Text>}
             </KeyboardAvoidingView>
             <KeyboardAvoidingView behavior='padding' style={styles.apnContainer}>
                 <TextInput
-                    theme={{colors: {primary: Theme.colors.ctiGreen, placeholder: Theme.colors.ctiGreen}}}
+                    theme={{ colors: { primary: Theme.colors.ctiGreen, placeholder: Theme.colors.ctiGreen } }}
                     style={styles.apnInput}
                     mode='outlined'
                     value={device.man_USER}
@@ -245,12 +245,12 @@ export const ConfigAPNView: React.FC<ConfigAPNViewProps> = ({device, onChange}) 
                     maxLength={48}
                     autoCapitalize='none'
                     error={!isASCII(device.man_USER, false)}
-                    onChangeText={(text) => onChange({...device, man_USER: text})}/>
-                { !isASCII(device.man_USER, false) && <Text>{t('screens.setup_device_data.error_user')}</Text>}
+                    onChangeText={(text) => onChange({ ...device, man_USER: text })} />
+                {!isASCII(device.man_USER, false) && <Text>{t('screens.setup_device_data.error_user')}</Text>}
             </KeyboardAvoidingView>
             <KeyboardAvoidingView behavior='padding' style={styles.apnContainer}>
                 <TextInput
-                    theme={{colors: {primary: Theme.colors.ctiGreen, placeholder: Theme.colors.ctiGreen}}}
+                    theme={{ colors: { primary: Theme.colors.ctiGreen, placeholder: Theme.colors.ctiGreen } }}
                     style={styles.apnInput}
                     mode='outlined'
                     value={device.man_CONTRASEN}
@@ -259,8 +259,8 @@ export const ConfigAPNView: React.FC<ConfigAPNViewProps> = ({device, onChange}) 
                     maxLength={48}
                     autoCapitalize='none'
                     error={!isASCII(device.man_CONTRASEN, false)}
-                    onChangeText={(text) => onChange({...device, man_CONTRASEN: text})}/>
-                { !isASCII(device.man_CONTRASEN, false) && <Text>{t('screens.setup_device_data.error_password')}</Text>}
+                    onChangeText={(text) => onChange({ ...device, man_CONTRASEN: text })} />
+                {!isASCII(device.man_CONTRASEN, false) && <Text>{t('screens.setup_device_data.error_password')}</Text>}
             </KeyboardAvoidingView>
         </>
 
@@ -269,11 +269,11 @@ export const ConfigAPNView: React.FC<ConfigAPNViewProps> = ({device, onChange}) 
 
 export type ConfigTypeViewProps = {
     type: number;
-    onChange: (type: 0|1) => void;
+    onChange: (type: 0 | 1) => void;
     isLoading: boolean;
 };
-export const ConfigTypeView: React.FC<ConfigTypeViewProps> = ({type, onChange, isLoading}) => {
-    const {t} = useLocale();
+export const ConfigTypeView: React.FC<ConfigTypeViewProps> = ({ type, onChange, isLoading }) => {
+    const { t } = useLocale();
     const styles = useStyles();
     return (
         <TouchableWithoutFeedback onPress={() => onChange(type === 0 ? 1 : 0)}>
@@ -287,8 +287,8 @@ export const ConfigTypeView: React.FC<ConfigTypeViewProps> = ({type, onChange, i
                     buttonColor={isLoading ? Theme.colors.ctiBlueGrey : Theme.colors.ctiGreen}
                     borderColor={Theme.colors.ctiBlueGrey}
                     hasPadding
-                    options={[{label: t('screens.setup_device_data.label_data_type_auto'), value: 0}, {label: t('screens.setup_device_data.label_data_type_man'), value: 1}]}
-                    onPress={(value) => onChange(value === 0 ? 0 : 1)}/>
+                    options={[{ label: t('screens.setup_device_data.label_data_type_auto'), value: 0 }, { label: t('screens.setup_device_data.label_data_type_man'), value: 1 }]}
+                    onPress={(value) => onChange(value === 0 ? 0 : 1)} />
                 <Text style={styles.modeSelectorLabel}>{t('screens.setup_device_data.message_auto_configuration')}</Text>
             </View>
         </TouchableWithoutFeedback>
@@ -314,13 +314,13 @@ export const isValidResponse = (state: ResponseState, device: DeviceConfig) => {
 export type ConfigViewProps = {
     device: DeviceConfig;
     updateDevice: (device: DeviceConfig) => void;
-    setNewConfig: (device: DeviceConfig|null) => void;
+    setNewConfig: (device: DeviceConfig | null) => void;
     closeConnection: () => void;
 };
-export const ConfigView: React.FC<ConfigViewProps> = ({device, updateDevice, setNewConfig, closeConnection}) => {
-    const {t} = useLocale();
+export const ConfigView: React.FC<ConfigViewProps> = ({ device, updateDevice, setNewConfig, closeConnection }) => {
+    const { t } = useLocale();
     const styles = useStyles();
-    const {request, state} = useUpdateConfig();
+    const { request, state } = useUpdateConfig();
     const newConfig = state.response?.body;
     const saveConfiguration = React.useCallback(() => {
         request(device.auto_man === 0 ? generate4GAutoBody() : generate4GManualBody(device.man_APN, device.man_USER, device.man_CONTRASEN));
@@ -338,49 +338,49 @@ export const ConfigView: React.FC<ConfigViewProps> = ({device, updateDevice, set
         return (
             <ErrorView
                 error={!!state.error}
-                close={closeConnection}/>
+                close={closeConnection} />
         );
     }
     return (
         <>
-        <ScrollView style={styles.container}>
-            <Text style={state.isLoading ? styles.configLabelDisabled : styles.configLabel}>{t('screens.setup_device_data.message_new_configuration')}</Text>
-            <ConfigTypeView
-                isLoading={state.isLoading}
-                type={device.auto_man}
-                onChange={(type: 0|1) => updateDevice({...device, auto_man: type})}/>
-            <ConfigAPNView
-                device={device}
-                onChange={(apn) => updateDevice({...device, ...apn})}
-            />
-            <Button
-                mode='contained'
-                color={Theme.colors.ctiGreen}
-                style={styles.button}
-                disabled={!isConfigurable(device, state.isLoading)}
-                onPress={saveConfiguration}>
-                {t('screens.setup_device_data.button_save_configuration')}
-            </Button>
-            <ErrorIndicator
-                show={!!newConfig && !isValidResponse(state, device)}
-                message={t('screens.setup_device_data.message_saving_fails')}/>
-        </ScrollView>
-        <SavingIndicator
-            show={state.isLoading}
-            message={t('screens.setup_device_data.message_saving')}/>
+            <ScrollView style={styles.container}>
+                <Text style={state.isLoading ? styles.configLabelDisabled : styles.configLabel}>{t('screens.setup_device_data.message_new_configuration')}</Text>
+                <ConfigTypeView
+                    isLoading={state.isLoading}
+                    type={device.auto_man}
+                    onChange={(type: 0 | 1) => updateDevice({ ...device, auto_man: type })} />
+                <ConfigAPNView
+                    device={device}
+                    onChange={(apn) => updateDevice({ ...device, ...apn })}
+                />
+                <Button
+                    mode='contained'
+                    color={Theme.colors.ctiGreen}
+                    style={styles.button}
+                    disabled={!isConfigurable(device, state.isLoading)}
+                    onPress={saveConfiguration}>
+                    {t('screens.setup_device_data.button_save_configuration')}
+                </Button>
+                <ErrorIndicator
+                    show={!!newConfig && !isValidResponse(state, device)}
+                    message={t('screens.setup_device_data.message_saving_fails')} />
+            </ScrollView>
+            <SavingIndicator
+                show={state.isLoading}
+                message={t('screens.setup_device_data.message_saving')} />
         </>
     );
 };
 
 type Props = StackScreenProps<RootStakParams, typeof SETUP_DEVICE_DATA_SCREEN>;
-const SetupDeviceDataScreen: React.FC<Props> = ({navigation, route}) => {
+const SetupDeviceDataScreen: React.FC<Props> = ({ navigation, route }) => {
     const currentDeviceConfig = route.params.device;
     const configurationName = route.params.configName;
     const styles = useStyles();
     const [config, setConfig] = React.useState(currentDeviceConfig);
-    const [newConfig, setNewConfig] = React.useState<DeviceConfig|null>(null);
+    const [newConfig, setNewConfig] = React.useState<DeviceConfig | null>(null);
     React.useEffect(() => {
-         if (!!newConfig) navigation.replace(VALIDATE_CONFIGURATION_SCREEN, {device: newConfig, configName: configurationName});
+        if (!!newConfig) navigation.replace(VALIDATE_CONFIGURATION_SCREEN, { device: newConfig, configName: configurationName });
     }, [newConfig]);
     return (
         <>
@@ -388,18 +388,18 @@ const SetupDeviceDataScreen: React.FC<Props> = ({navigation, route}) => {
                 device={config}
                 updateDevice={setConfig}
                 closeScreen={() => navigation.pop()}
-                closeConnection={() => navigation.replace(DISCONNECT_SCREEN)}/>
+                closeConnection={() => navigation.replace(DISCONNECT_SCREEN)} />
             <PinView
                 device={config}
                 updateDevice={setConfig}
                 closeScreen={() => navigation.pop()}
-                closeConnection={() => navigation.replace(DISCONNECT_SCREEN)}/>
+                closeConnection={() => navigation.replace(DISCONNECT_SCREEN)} />
             <ConfigView
                 device={config}
                 updateDevice={setConfig}
                 setNewConfig={setNewConfig}
                 closeConnection={() => navigation.replace(DISCONNECT_SCREEN)}
-                />
+            />
         </>
     );
 };

@@ -457,9 +457,26 @@ export const getSuggestion = async () => {
     const showAgain = await AsyncStorage.getItem('SHOW_AGAIN');
     return showAgain === '1';
 };
-export const isMiUi = async () => {
-    if (Platform.OS === 'ios') {
-        return false;
-    }
-    //return await WifiManager.isMiUi();
+// export const isMiUi = async () => {
+//     if (Platform.OS === 'ios') {
+//         return false;
+//     }
+//     //return await WifiManager.isMiUi();
+// };
+export const isMiUi = async (): Promise<boolean> => {
+    if (Platform.OS === 'ios') return false;
+    return false; // default seguro si no tienes el método nativo
 };
+export const timeoutResolvePromise = (delay = 45000) => {
+    return new Promise((resolve) => {
+        setTimeout(
+            () => {
+                //console.log('Resolve Promise!!!');
+                resolve(new Error('Timeout promise fired'));
+            },
+            delay
+        );
+    });
+};
+
+
