@@ -1,5 +1,8 @@
-import { DeviceConfig } from 'src/utils/device-api';
-import { WifiSelected, WifiStatus } from 'src/utils/wifi';
+// import { DeviceConfig } from 'src/utils/device-api';
+// import { WifiSelected, WifiStatus } from 'src/utils/wifi';
+
+import { DeviceConfig } from "../utils/device-api";
+import { WifiSelected, WifiStatus } from "../utils/wifi";
 
 export const FIND_DEVICES_SCREEN = 'FindDevicesScreen';
 export const CONFIGURED_DEVICES_SCREEN = 'ConfiguredDevicesScreen';
@@ -19,10 +22,10 @@ export const XIAOMI_PERMISSIONS_SCREEN = 'XiaomiPermissions';
 export type RootStakParams = {
     FindDevicesScreen: undefined;
     ConfiguredDevicesScreen: undefined;
-    SetupDeviceScreen: {wifi: WifiStatus, password: string};
-    SetupDeviceWifiScreen: {device: DeviceConfig, configName: string};
-    SetupDeviceDataScreen: {device: DeviceConfig, configName: string};
-    ValidateConfigurationScreen: {device: DeviceConfig, configName: string};
+    SetupDeviceScreen: { wifi: WifiStatus, password: string };
+    SetupDeviceWifiScreen: { device: DeviceConfig, configName: string };
+    SetupDeviceDataScreen: { device: DeviceConfig, configName: string };
+    ValidateConfigurationScreen: { device: DeviceConfig, configName: string };
     LanguagesScreen: undefined;
     ResetDeviceScreen: undefined;
     ChangeDevicePasswordScreen: undefined;

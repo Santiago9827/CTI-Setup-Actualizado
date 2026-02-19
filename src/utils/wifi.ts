@@ -213,7 +213,7 @@
 
 
 
-///!--------Prueba wifi-----------------
+//!--------Prueba wifi-----------------
 import { Platform, Linking } from 'react-native';
 import WifiManager, { WifiEntry } from 'react-native-wifi-reborn';
 import { waitForPromise } from './device-api';
@@ -456,4 +456,10 @@ export const saveSuggestion = async (showAgain: '0' | '1') => {
 export const getSuggestion = async () => {
     const showAgain = await AsyncStorage.getItem('SHOW_AGAIN');
     return showAgain === '1';
+};
+export const isMiUi = async () => {
+    if (Platform.OS === 'ios') {
+        return false;
+    }
+    //return await WifiManager.isMiUi();
 };
