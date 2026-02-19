@@ -35,6 +35,7 @@ import DisconnectScreen from './disconnect-screen';
 import WifiCredentialsScreen from './wifi-credentials-screen';
 import ConfigurationTypeSelectorScreen from './configuration-type-selector-screen';
 import XiaomiPermissionsScreen from './xiaomi-permissions-screen';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 const RootStack = createStackNavigator<RootStakParams>();
@@ -70,8 +71,9 @@ const FindHeader: React.FC<StackHeaderProps> = ({ navigation, options, back }) =
                 onDismiss={() => setMenuOpen(false)}
                 anchor={
                     <Appbar.Action
-                        icon="more-vert"
-                        iconColor="white"
+                        icon={({ size, color }) => (
+                            <MaterialCommunityIcons name="dots-vertical" size={size} color={color} />
+                        )}
                         onPress={() => setMenuOpen(true)}
                     />
                 }
