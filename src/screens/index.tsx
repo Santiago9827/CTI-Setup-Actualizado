@@ -72,7 +72,7 @@ const FindHeader: React.FC<StackHeaderProps> = ({ navigation, options, back }) =
                 anchor={
                     <Appbar.Action
                         icon={({ size, color }) => (
-                            <MaterialCommunityIcons name="dots-vertical" size={size} color={color} />
+                            <MaterialCommunityIcons name="dots-vertical" size={size} color="white" />
                         )}
                         onPress={() => setMenuOpen(true)}
                     />

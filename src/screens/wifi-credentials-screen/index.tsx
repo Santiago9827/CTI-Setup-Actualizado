@@ -88,7 +88,7 @@ export const WifiCredentialsScreen: React.FC<Props> = ({ navigation, route }) =>
                         <Image source={DeviceImg} height={180} width={180} style={{ width: 180, height: 180 }} />
                     </View>
                     <View style={styles.inputContainer}>
-                        <TextInput
+                        {/* <TextInput
                             style={styles.inputPassword}
                             secureTextEntry={!showPasswd}
                             theme={{ colors: { primary: Theme.colors.ctiGreen, placeholder: Theme.colors.ctiGreen } }}
@@ -101,14 +101,41 @@ export const WifiCredentialsScreen: React.FC<Props> = ({ navigation, route }) =>
                             keyboardType='numeric'
                             maxLength={8}
                             error={!!error}
-                            onChangeText={changePassword} />
+                            onChangeText={changePassword} /> */}
+                        <TextInput
+                            style={styles.inputPassword}
+                            mode="outlined"
+                            label={t('screens.wifi_credentials.input_label_password')}
+                            placeholder={t('screens.wifi_credentials.input_hint_password')}
+                            value={passwd}
+                            onChangeText={changePassword}
+                            secureTextEntry={!showPasswd}
+                            autoCapitalize="none"
+                            clearTextOnFocus
+                            keyboardType="numeric"
+                            maxLength={8}
+                            error={!!error}
+
+                            textColor="white"
+                            placeholderTextColor="rgba(255,255,255,0.55)"
+                            outlineColor="rgba(255,255,255,0.35)"
+                            activeOutlineColor={Theme.colors.ctiGreen}
+
+                            theme={{
+                                colors: {
+                                    onSurface: "white",
+                                    onSurfaceVariant: "white",
+                                },
+                            }}
+                        />
+
                         <View style={{ marginLeft: -50, marginTop: 8 }}><IconButton icon={showPasswd ? 'eye' : 'eye-off'} onPress={() => setShowPasswd(show => !show)} iconColor={!!error ? Theme.colors.error : Theme.colors.text} /></View>
                     </View>
                     <View style={styles.errorMessage}>
                         <Text style={styles.errorMessageText}>{error}</Text>
                     </View>
                 </View>
-                <View style={styles.buttons}>
+                {/* <View style={styles.buttons}>
                     <Button
                         style={styles.cancelButton}
                         color='#E1E1E1'
@@ -127,7 +154,33 @@ export const WifiCredentialsScreen: React.FC<Props> = ({ navigation, route }) =>
                         onPress={connect}>
                         {t('screens.wifi_credentials.button_connect')}
                     </Button>
+                </View> */}
+                <View style={styles.buttons}>
+                    <Button
+                        mode="contained"
+                        style={styles.cancelButton}
+                        contentStyle={{ height: 48 }}
+                        buttonColor={Theme.colors.ctiGrey}        // fondo gris claro
+                        textColor={Theme.colors.ctiGreyDark}      // texto gris oscuro
+                        disabled={connecting}
+                        onPress={() => navigation.pop()}
+                    >
+                        {t('screens.wifi_credentials.button_cancel')}
+                    </Button>
+
+                    <Button
+                        mode="contained"
+                        style={styles.connectButton}
+                        contentStyle={{ height: 48 }}
+                        buttonColor={Theme.colors.ctiGreen}       // fondo verde
+                        textColor={Theme.colors.primary}          // texto azul oscuro
+                        disabled={!passwd || passwd.length < 8 || connecting}
+                        onPress={connect}
+                    >
+                        {t('screens.wifi_credentials.button_connect')}
+                    </Button>
                 </View>
+
                 <View style={{ height: 60 }} />
             </ScrollView>
             <LoadingView show={connecting} size={180} />

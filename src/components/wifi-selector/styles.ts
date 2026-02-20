@@ -15,7 +15,7 @@ export const useStyles = () => {
             alignItems: 'center'
         },
         inputPassword: {
-            color: theme.colors.primary,
+            color: 'white',
             flex: 1,
             fontSize: 16
         },

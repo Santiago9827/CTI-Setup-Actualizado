@@ -43,7 +43,7 @@ export const WifiSelector: React.FC<WifiSelectorProps> = ({ ssid, updateSSID, pa
                 show={showWifis}
                 onSelected={onSelected} />
             <View>
-                <Button
+                {/* <Button
                     style={styles.buttonMoreWifis}
                     labelStyle={styles.buttonMoreWifisText}
                     mode='contained'
@@ -51,7 +51,20 @@ export const WifiSelector: React.FC<WifiSelectorProps> = ({ ssid, updateSSID, pa
                     onPress={() => setShowWifis(true)}
                     icon='wifi-star'>
                     {t('components.wifi_selector.button_show_wifis')}
+                </Button> */}
+                <Button
+                    style={styles.buttonMoreWifis}
+                    contentStyle={{ height: 56 }}     // opcional, para centrar bien
+                    labelStyle={styles.buttonMoreWifisText}
+                    mode="contained"
+                    buttonColor={Theme.colors.ctiGreen}
+                    textColor={Theme.colors.primary}
+                    onPress={() => setShowWifis(true)}
+                    icon="wifi-star"
+                >
+                    {t('components.wifi_selector.button_show_wifis')}
                 </Button>
+
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.inputPassword}
