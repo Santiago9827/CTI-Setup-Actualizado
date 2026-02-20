@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {useTheme} from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export const useStyles = () => {
     const theme = useTheme();
@@ -101,7 +101,12 @@ export const useStyles = () => {
         },
         button: {
             margin: 16
+        },
+        buttonText: {
+            color: theme.colors.primary, // oscuro
+            fontSize: 18,
         }
+
     });
 };
 

@@ -357,6 +357,8 @@ export const ConfigView: React.FC<ConfigViewProps> = ({ device, updateDevice, se
                     mode='contained'
                     color={Theme.colors.ctiGreen}
                     style={styles.button}
+                    labelStyle={styles.buttonText}   // ✅ AÑADIR
+
                     disabled={!isConfigurable(device, state.isLoading)}
                     onPress={saveConfiguration}>
                     {t('screens.setup_device_data.button_save_configuration')}

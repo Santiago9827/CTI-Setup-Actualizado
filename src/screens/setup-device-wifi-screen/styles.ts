@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {useTheme} from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export const useStyles = () => {
     const theme = useTheme();
@@ -20,7 +20,8 @@ export const useStyles = () => {
         },
         message: {
             margin: 16,
-            padding: 4
+            padding: 4,
+            color: 'white',
         },
         inputContainer: {
             marginLeft: 64,
@@ -48,7 +49,7 @@ export const useStyles = () => {
             padding: 4
         },
         buttonText: {
-            color: theme.colors.primary,
+            color: 'white',
             fontSize: 18
         }
     });

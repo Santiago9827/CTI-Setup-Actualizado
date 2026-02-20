@@ -11,7 +11,7 @@ export const useStyles = () => {
             marginTop: 28,
             padding: 16,
             fontSize: 22,
-            color: theme.colors.primary,
+            color: theme.colors.ctiGreen,
             textAlign: 'center',
         }
     });

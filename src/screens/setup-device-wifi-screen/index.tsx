@@ -122,6 +122,7 @@ const SetupDeviceWifiScreen: React.FC<Props> = ({ navigation, route }) => {
                 mode='contained'
                 style={styles.button}
                 color={Theme.colors.ctiGreen}
+                labelStyle={styles.buttonText}
                 disabled={!(validCredentials[0]) || state.isLoading}
                 onPress={() => request(generateWifiBody(ssid, passwd))}>
                 {t('screens.setup_device_wifi.button_save_configuration')}

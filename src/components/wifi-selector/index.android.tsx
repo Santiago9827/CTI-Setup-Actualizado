@@ -66,7 +66,7 @@ export const WifiSelector: React.FC<WifiSelectorProps> = ({ ssid, updateSSID, pa
                 </Button>
 
                 <View style={styles.inputContainer}>
-                    <TextInput
+                    {/* <TextInput
                         style={styles.inputPassword}
                         theme={{ colors: { primary: Theme.colors.ctiGreen, placeholder: Theme.colors.ctiGreen } }}
                         mode='outlined'
@@ -76,13 +76,35 @@ export const WifiSelector: React.FC<WifiSelectorProps> = ({ ssid, updateSSID, pa
                         clearTextOnFocus={true}
                         error={!!errorSSID}
                         value={ssid}
-                        onChangeText={updateSSID} />
+                        onChangeText={updateSSID} /> */}
+                    <TextInput
+                        style={styles.inputPassword}
+                        mode="outlined"
+                        label={t("components.wifi_selector.label_ssid")}
+                        placeholder={t("components.wifi_selector.hint_ssid")}
+                        autoCapitalize="none"
+                        clearTextOnFocus
+                        error={!!errorSSID}
+                        value={ssid}
+                        onChangeText={updateSSID}
+                        textColor="#FFFFFF"
+                        contentStyle={{ color: "#FFFFFF" }}
+                        theme={{
+                            colors: {
+                                primary: Theme.colors.ctiGreen,
+                                placeholder: "rgba(255,255,255,0.6)",
+                                onSurface: "#FFFFFF",
+                                onSurfaceVariant: "rgba(255,255,255,0.7)", // label cuando NO está enfocado
+                            },
+                        }}
+                    />
+
                 </View>
                 <View style={styles.errorMessage}><Text style={styles.errorMessageText}>{errorSSID}</Text></View>
             </View>
             <View>
                 <View style={styles.inputContainer}>
-                    <TextInput
+                    {/* <TextInput
                         style={styles.inputPassword}
                         secureTextEntry={!showPasswd}
                         theme={{ colors: { primary: Theme.colors.ctiGreen, placeholder: Theme.colors.ctiGreen } }}
@@ -93,7 +115,30 @@ export const WifiSelector: React.FC<WifiSelectorProps> = ({ ssid, updateSSID, pa
                         clearTextOnFocus={true}
                         error={!!errorPasswd}
                         defaultValue={passwd}
-                        onChangeText={updatePasswd} />
+                        onChangeText={updatePasswd} /> */}
+                    <TextInput
+                        style={styles.inputPassword}
+                        secureTextEntry={!showPasswd}
+                        mode="outlined"
+                        label={t("components.wifi_selector.label_passwd")}
+                        placeholder={t("components.wifi_selector.hint_passwd")}
+                        autoCapitalize="none"
+                        clearTextOnFocus
+                        error={!!errorPasswd}
+                        value={passwd}
+                        onChangeText={updatePasswd}
+                        textColor="#FFFFFF"
+                        contentStyle={{ color: "#FFFFFF" }}
+                        theme={{
+                            colors: {
+                                primary: Theme.colors.ctiGreen,
+                                placeholder: "rgba(255,255,255,0.6)",
+                                onSurface: "#FFFFFF",
+                                onSurfaceVariant: "rgba(255,255,255,0.7)",
+                            },
+                        }}
+                    />
+
                     <View style={{ marginLeft: -50, marginTop: 8 }}>
                         <IconButton icon={showPasswd ? 'eye' : 'eye-off'} onPress={() =>
                             setShowPasswd(show => !show)} iconColor={!!errorPasswd ? Theme.colors.error : Theme.colors.text} />
