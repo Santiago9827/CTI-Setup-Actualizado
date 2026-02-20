@@ -11,11 +11,11 @@ import {
     Appbar,
     Menu
 } from 'react-native-paper';
-import {StackScreenProps} from '@react-navigation/stack';
-import {useFocusEffect} from '@react-navigation/native';
-import {StackHeaderProps} from '@react-navigation/stack';
-import {useLocale} from '../../locales';
-import {useStyles} from './styles';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useFocusEffect } from '@react-navigation/native';
+import { StackHeaderProps } from '@react-navigation/stack';
+import { useLocale } from '../../locales';
+import { useStyles } from './styles';
 import {
     SETUP_DEVICE_SCREEN,
     RESET_DEVICE_SCREEN,
@@ -25,7 +25,7 @@ import {
     LANGUAGES_SCREEN,
     RootStakParams,
 } from '../constants';
-import {DeviceConfig, ERROR_GET_CONFIG_TIMEOUT, useGetConfig, waitForPromise} from '../../utils/device-api';
+import { DeviceConfig, ERROR_GET_CONFIG_TIMEOUT, useGetConfig, waitForPromise } from '../../utils/device-api';
 import CloseConnection from '../../components/close-connection';
 import LoadingView from '../../components/loading-view';
 import Theme from '../../theme';
@@ -37,16 +37,17 @@ import {
 
 const ErrorImg = require('../../images/errordino.png');
 
-export const ErrorView: React.FC<{error?: boolean; close: () => void;}> = ({error, close}) => {
+
+export const ErrorView: React.FC<{ error?: boolean; close: () => void; }> = ({ error, close }) => {
     const styles = useStyles();
-    const {t} = useLocale();
+    const { t } = useLocale();
     if (!error) return null;
     return (
         <View
             style={styles.container}>
             <View style={styles.errorBody}>
                 <Text style={styles.errorBodyTitle}>{t('screens.setup_device.error_communication')}</Text>
-                <Image source={ErrorImg} style={{width: 200, height: 200}} resizeMode='contain'/>
+                <Image source={ErrorImg} style={{ width: 200, height: 200 }} resizeMode='contain' />
                 <Button
                     style={styles.buttonClose}
                     color={Theme.colors.ctiGreen}
@@ -59,8 +60,8 @@ export const ErrorView: React.FC<{error?: boolean; close: () => void;}> = ({erro
     );
 };
 
-const DeviceView: React.FC<{device?: DeviceConfig}> = ({device}) => {
-    const {t} = useLocale();
+const DeviceView: React.FC<{ device?: DeviceConfig }> = ({ device }) => {
+    const { t } = useLocale();
     const styles = useStyles();
     if (!device) return null;
     return (
@@ -83,8 +84,8 @@ export const getConnectionType = (cnx: number) => {
     if (cnx === 2) return 'screens.setup_device.label_data';
     return 'screens.setup_device.label_unknown';
 };
-const ConnectionModeView: React.FC<{device?: DeviceConfig}> = ({device}) => {
-    const {t} = useLocale();
+const ConnectionModeView: React.FC<{ device?: DeviceConfig }> = ({ device }) => {
+    const { t } = useLocale();
     const styles = useStyles();
     if (!device) return null;
     return (
@@ -95,8 +96,8 @@ const ConnectionModeView: React.FC<{device?: DeviceConfig}> = ({device}) => {
         </View>
     );
 };
-const WifiConnectionView: React.FC<{device?: DeviceConfig}> = ({device}) => {
-    const {t} = useLocale();
+const WifiConnectionView: React.FC<{ device?: DeviceConfig }> = ({ device }) => {
+    const { t } = useLocale();
     const styles = useStyles();
     if (!device || device.tipo_conexion !== 1) return null;
     return (
@@ -106,8 +107,8 @@ const WifiConnectionView: React.FC<{device?: DeviceConfig}> = ({device}) => {
         </View>
     );
 };
-const ManualDataConnectionView: React.FC<{device?: DeviceConfig}> = ({device}) => {
-    const {t} = useLocale();
+const ManualDataConnectionView: React.FC<{ device?: DeviceConfig }> = ({ device }) => {
+    const { t } = useLocale();
     const styles = useStyles();
     if (!device || device.tipo_conexion !== 2 || device.auto_man != 1) return null;
     return (
@@ -121,85 +122,213 @@ const ManualDataConnectionView: React.FC<{device?: DeviceConfig}> = ({device}) =
         </>
     );
 };
-const DataConnectionView: React.FC<{device?: DeviceConfig}> = ({device}) => {
-    const {t} = useLocale();
+const DataConnectionView: React.FC<{ device?: DeviceConfig }> = ({ device }) => {
+    const { t } = useLocale();
     const styles = useStyles();
     if (!device || device.tipo_conexion !== 2) return null;
     return (
         <View style={styles.block}>
             <Text style={styles.label}>{t('screens.setup_device.label_data_type')}</Text>
             <View style={styles.info}><Text style={styles.labelInfo}>{device.auto_man === 0 ? t('screens.setup_device.label_data_type_auto') : t('screens.setup_device.label_data_type_man')}</Text></View>
-            <ManualDataConnectionView device={device}/>
+            <ManualDataConnectionView device={device} />
         </View>
     );
 };
 
-export const setupHeader = (disconnect: () => void): React.FC<StackHeaderProps>  => {
-    return ({scene, navigation}) => {
-        const title = scene.descriptor.options.title || 'CTI Setup';
-        const {t} = useLocale();
-        const [isMenuOpen, setMenuOpen] = React.useState(false);
+// export const setupHeader = (disconnect: () => void): React.FC<StackHeaderProps>  => {
 
-        return (
-            <Appbar.Header>
-                <Appbar.Content
-                    title={title}/>
-                <Menu
-                    onDismiss={() => setMenuOpen(false)}
-                    visible={isMenuOpen}
-                    anchor={
-                        <Appbar.Action
-                            icon='dots-vertical'
-                            color='white'
-                            onPress={() => setMenuOpen(true)}/>
-                    }>
-                    <Menu.Item
-                        title={<Text style={{color: '#152A88'}}>{t('screens.find_devices.button_to_change_language')}</Text>}
-                        onPress={() => {
-                            navigation.navigate(LANGUAGES_SCREEN);
-                            setMenuOpen(false);
-                        }}/>
-                    <Menu.Item
-                        title={<Text style={{color: '#152A88'}}>{t('screens.setup_device.button_change_password')}</Text>}
-                        onPress={() => {
-                            navigation.navigate(CHANGE_DEVICE_PASSWORD_SCREEN);
-                            setMenuOpen(false);
-                        }}/>
-                    <Menu.Item
-                        title={<Text style={{color: '#152A88'}}>{t('screens.setup_device.button_reset_configuration')}</Text>}
-                        onPress={() => {
-                            navigation.navigate(RESET_DEVICE_SCREEN);
-                            setMenuOpen(false);
-                        }}/>
-                    <Menu.Item
-                        title={<Text style={{color: '#152A88'}}>{t('screens.setup_device.button_disconnect')}</Text>}
-                        onPress={() => {
-                            disconnect();
-                            setMenuOpen(false);
-                        }}/>
-                </Menu>
-            </Appbar.Header>
-        );
-    };
+//     return ({scene, navigation}) => {
+//         const title = scene.descriptor.options.title || 'CTI Setup';
+//         const {t} = useLocale();
+//         const [isMenuOpen, setMenuOpen] = React.useState(false);
+
+//         return (
+//             <Appbar.Header>
+//                 <Appbar.Content
+//                     title={title}/>
+//                 <Menu
+//                     onDismiss={() => setMenuOpen(false)}
+//                     visible={isMenuOpen}
+//                     anchor={
+//                         <Appbar.Action
+//                             icon='dots-vertical'
+//                             color='white'
+//                             onPress={() => setMenuOpen(true)}/>
+//                     }>
+//                     <Menu.Item
+//                         title={<Text style={{color: '#152A88'}}>{t('screens.find_devices.button_to_change_language')}</Text>}
+//                         onPress={() => {
+//                             navigation.navigate(LANGUAGES_SCREEN);
+//                             setMenuOpen(false);
+//                         }}/>
+//                     <Menu.Item
+//                         title={<Text style={{color: '#152A88'}}>{t('screens.setup_device.button_change_password')}</Text>}
+//                         onPress={() => {
+//                             navigation.navigate(CHANGE_DEVICE_PASSWORD_SCREEN);
+//                             setMenuOpen(false);
+//                         }}/>
+//                     <Menu.Item
+//                         title={<Text style={{color: '#152A88'}}>{t('screens.setup_device.button_reset_configuration')}</Text>}
+//                         onPress={() => {
+//                             navigation.navigate(RESET_DEVICE_SCREEN);
+//                             setMenuOpen(false);
+//                         }}/>
+//                     <Menu.Item
+//                         title={<Text style={{color: '#152A88'}}>{t('screens.setup_device.button_disconnect')}</Text>}
+//                         onPress={() => {
+//                             disconnect();
+//                             setMenuOpen(false);
+//                         }}/>
+//                 </Menu>
+//             </Appbar.Header>
+//         );
+//     };
+// };
+
+// export const setupHeader = (disconnect: () => void): React.FC<StackHeaderProps> =>
+//     ({ navigation, options, back }) => {
+//         const title = options.title ?? "CTI Setup";
+//         const { t } = useLocale();
+//         const [isMenuOpen, setMenuOpen] = React.useState(false);
+
+//         return (
+//             <Appbar.Header>
+//                 {back ? <Appbar.BackAction onPress={() => navigation.goBack()} iconColor="white" /> : null}
+//                 <Appbar.Content title={title} titleStyle={{ color: "white" }} />
+
+//                 <Menu
+//                     visible={isMenuOpen}
+//                     onDismiss={() => setMenuOpen(false)}
+//                     anchor={
+//                         <Appbar.Action
+//                             icon="dots-vertical"
+//                             iconColor="white"
+//                             onPress={() => setMenuOpen(true)}
+//                         />
+//                     }
+//                 >
+//                     <Menu.Item
+//                         title={t("screens.find_devices.button_to_change_language")}
+//                         titleStyle={{ color: "#152A88" }}
+//                         onPress={() => { navigation.navigate(LANGUAGES_SCREEN); setMenuOpen(false); }}
+//                     />
+//                     <Menu.Item
+//                         title={t("screens.setup_device.button_change_password")}
+//                         titleStyle={{ color: "#152A88" }}
+//                         onPress={() => { navigation.navigate(CHANGE_DEVICE_PASSWORD_SCREEN); setMenuOpen(false); }}
+//                     />
+//                     <Menu.Item
+//                         title={t("screens.setup_device.button_reset_configuration")}
+//                         titleStyle={{ color: "#152A88" }}
+//                         onPress={() => { navigation.navigate(RESET_DEVICE_SCREEN); setMenuOpen(false); }}
+//                     />
+//                     <Menu.Item
+//                         title={t("screens.setup_device.button_disconnect")}
+//                         titleStyle={{ color: "#152A88" }}
+//                         onPress={() => { disconnect(); setMenuOpen(false); }}
+//                     />
+//                 </Menu>
+//             </Appbar.Header>
+//         );
+//     };
+type SetupDeviceHeaderProps = StackHeaderProps & {
+    onDisconnectPress: () => void;
 };
+
+const SetupDeviceHeader: React.FC<SetupDeviceHeaderProps> = ({
+    navigation,
+    options,
+    back,
+    onDisconnectPress,
+}) => {
+    const title = options.title ?? "CTI Setup";
+    const { t } = useLocale();
+    const [isMenuOpen, setMenuOpen] = React.useState(false);
+
+    return (
+        <Appbar.Header>
+            {back ? (
+                <Appbar.BackAction onPress={() => navigation.goBack()} iconColor="white" />
+            ) : null}
+
+            <Appbar.Content title={title} titleStyle={{ color: "white" }} />
+
+            <Menu
+                visible={isMenuOpen}
+                onDismiss={() => setMenuOpen(false)}
+                anchor={
+                    <Appbar.Action
+                        icon="dots-vertical"
+                        iconColor="white"
+                        onPress={() => setMenuOpen(true)}
+                    />
+                }
+            >
+                <Menu.Item
+                    title={t("screens.find_devices.button_to_change_language")}
+                    titleStyle={{ color: "#152A88" }}
+                    onPress={() => {
+                        navigation.navigate(LANGUAGES_SCREEN);
+                        setMenuOpen(false);
+                    }}
+                />
+                <Menu.Item
+                    title={t("screens.setup_device.button_change_password")}
+                    titleStyle={{ color: "#152A88" }}
+                    onPress={() => {
+                        navigation.navigate(CHANGE_DEVICE_PASSWORD_SCREEN);
+                        setMenuOpen(false);
+                    }}
+                />
+                <Menu.Item
+                    title={t("screens.setup_device.button_reset_configuration")}
+                    titleStyle={{ color: "#152A88" }}
+                    onPress={() => {
+                        navigation.navigate(RESET_DEVICE_SCREEN);
+                        setMenuOpen(false);
+                    }}
+                />
+                <Menu.Item
+                    title={t("screens.setup_device.button_disconnect")}
+                    titleStyle={{ color: "#152A88" }}
+                    onPress={() => {
+                        onDisconnectPress();
+                        setMenuOpen(false);
+                    }}
+                />
+            </Menu>
+        </Appbar.Header>
+    );
+};
+
+
 type Props = StackScreenProps<RootStakParams, typeof SETUP_DEVICE_SCREEN>;
-const SetupDeviceScreen: React.FC<Props> = ({navigation, route}) => {
-    const {t} = useLocale();
+const SetupDeviceScreen: React.FC<Props> = ({ navigation, route }) => {
+    const { t } = useLocale();
     const styles = useStyles();
-    const {state, request} = useGetConfig();
+    const { state, request } = useGetConfig();
     const device = state.response?.body;
     const deviceWifi = route.params.wifi;
     const deviceWifiPassword = route.params.password;
-    const [reconnecting, setReconnecting] = React.useState<{connecting: boolean; try: number}>({connecting: false, try: 0});
+    const [reconnecting, setReconnecting] = React.useState<{ connecting: boolean; try: number }>({ connecting: false, try: 0 });
 
     const [showDisconnectDialog, setShowDisconnectDialog] = React.useState(false);
-    const disconnectDialog = (option: 0|1) => {
-        if(option === 1) navigation.replace(DISCONNECT_SCREEN);
+    const disconnectDialog = (option: 0 | 1) => {
+        if (option === 1) navigation.replace(DISCONNECT_SCREEN);
         setShowDisconnectDialog(false);
     };
-    React.useLayoutEffect(() => {
-        navigation.setOptions({header: setupHeader(() => setShowDisconnectDialog(true))});
+    const onDisconnectPress = React.useCallback(() => {
+        setShowDisconnectDialog(true);
     }, []);
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            header: (props) => (
+                <SetupDeviceHeader {...props} onDisconnectPress={onDisconnectPress} />
+            ),
+        });
+    }, [navigation, onDisconnectPress]);
+
     useFocusEffect(
         React.useCallback(() => {
             const onBackPress = () => {
@@ -237,14 +366,14 @@ const SetupDeviceScreen: React.FC<Props> = ({navigation, route}) => {
                 console.log('Error RE-connection wifi invalid ssid', connected.ssid);
             }
         }
-        catch(error) {
+        catch (error) {
             console.log('Error RE-Cocnnection wifi', ssid, passwd, error);
         }
-        setTimeout(() => setReconnecting(connecting => ({connecting: false, try: connecting.try})), 2000);
+        setTimeout(() => setReconnecting(connecting => ({ connecting: false, try: connecting.try })), 2000);
     }, []);
     React.useLayoutEffect(() => {
         if (state.error === ERROR_GET_CONFIG_TIMEOUT && reconnecting.try < 2) {
-            setReconnecting(connecting => ({connecting: true, try: connecting.try + 1}));
+            setReconnecting(connecting => ({ connecting: true, try: connecting.try + 1 }));
             reconnect(deviceWifi.ssid, deviceWifiPassword);
         }
     }, [state.error]);
@@ -252,18 +381,18 @@ const SetupDeviceScreen: React.FC<Props> = ({navigation, route}) => {
     return (
         <View style={styles.container}>
             <ScrollView
-                style={{flex: 1}}>
+                style={{ flex: 1 }}>
                 {/*<Text>{JSON.stringify(state)} - {JSON.stringify(reconnecting)}</Text>*/}
                 <ErrorView
                     error={showErrorView}
-                    close={() => navigation.replace(DISCONNECT_SCREEN)}/>
-                <DeviceView device={device}/>
-                <ConnectionModeView device={device}/>
-                <WifiConnectionView device={device}/>
-                <DataConnectionView device={device}/>
+                    close={() => navigation.replace(DISCONNECT_SCREEN)} />
+                <DeviceView device={device} />
+                <ConnectionModeView device={device} />
+                <WifiConnectionView device={device} />
+                <DataConnectionView device={device} />
                 <CloseConnection
                     isOpen={showDisconnectDialog}
-                    closeDialog={disconnectDialog}/>
+                    closeDialog={disconnectDialog} />
             </ScrollView>
             <View>
                 <Button
@@ -275,7 +404,7 @@ const SetupDeviceScreen: React.FC<Props> = ({navigation, route}) => {
                     {t('screens.setup_device.button_new_configuration')}
                 </Button>
             </View>
-            <LoadingView show={showLoading} size={180} message={t('screens.setup_device.message_getting_configuration') + deviceWifi.ssid}/>
+            <LoadingView show={showLoading} size={180} message={t('screens.setup_device.message_getting_configuration') + deviceWifi.ssid} />
         </View>
     );
 };
