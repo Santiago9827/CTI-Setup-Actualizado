@@ -13,7 +13,7 @@ export const useStyles = () => {
         },
         title: {
             fontSize: 20,
-            color: theme.colors.primary
+            color: theme.colors.ctiGreen
         },
         body: {
             flex: 1,
@@ -26,15 +26,15 @@ export const useStyles = () => {
             alignItems: 'center',
             borderWidth: 1,
             borderRadius: 18,
-            borderColor: theme.colors.surfaceVariant,
-            backgroundColor: theme.colors.surfaceVariant
+            borderColor: theme.colors.ctiBlueGrey,
+            backgroundColor: theme.colors.ctiBlueGrey
         },
         imageButton: {
             width: 200,
             height: 200,
         },
         dialog: {
-            backgroundColor: theme.colors.surfaceVariant
+            backgroundColor: theme.colors.ctiBlueGrey
         }
     });
 };
