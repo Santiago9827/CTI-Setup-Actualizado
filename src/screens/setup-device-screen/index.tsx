@@ -246,7 +246,7 @@ const SetupDeviceHeader: React.FC<SetupDeviceHeaderProps> = ({
     const [isMenuOpen, setMenuOpen] = React.useState(false);
 
     return (
-        <Appbar.Header>
+        <Appbar.Header style={{ backgroundColor: "#17314C" }}>
             {back ? (
                 <Appbar.BackAction onPress={() => navigation.goBack()} iconColor="white" />
             ) : null}

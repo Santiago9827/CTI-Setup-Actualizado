@@ -1,12 +1,19 @@
-import {StyleSheet} from 'react-native';
-import {useTheme} from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export const useStyles = () => {
     const theme = useTheme();
     return StyleSheet.create({
+        // container: {
+        //     flex: 1,
+        //     backgroundColor: theme.colors.background,
+        //     paddingTop: 16,
+        //     paddingLeft: 10,
+        //     paddingRight: 10
+        // },
         container: {
             flex: 1,
-            backgroundColor: theme.colors.background,
+            backgroundColor: '#17314C',
             paddingTop: 16,
             paddingLeft: 10,
             paddingRight: 10
