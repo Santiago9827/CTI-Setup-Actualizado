@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import {
     View,
     Text
@@ -8,14 +9,14 @@ import {
     getCurrentWifi,
 } from '../../utils/wifi';
 import useCheckWifi from '../use-checkWifi';
-import {useUpdateAppConfigWifiConnection} from '../use-configuration';
-import {useLocale} from '../../locales';
-import {useStyles} from './styles';
+import { useUpdateAppConfigWifiConnection } from '../use-configuration';
+import { useLocale } from '../../locales';
+import { useStyles } from './styles';
 
 export const CurrentWifi: React.FC<{}> = () => {
-    const {t} = useLocale();
+    const { t } = useLocale();
     const styles = useStyles();
-    const [wifiStatus, setWifiStatus] = React.useState<WifiStatus|null|undefined>(null);
+    const [wifiStatus, setWifiStatus] = React.useState<WifiStatus | null | undefined>(null);
     const wifiConnection = useCheckWifi();
     const updateConfig = useUpdateAppConfigWifiConnection();
     React.useEffect(() => {
@@ -32,7 +33,7 @@ export const CurrentWifi: React.FC<{}> = () => {
             </View>
         );
     }
-    if(!wifiConnection.connected || !wifiStatus) {
+    if (!wifiConnection.connected || !wifiStatus) {
         return (
             <View style={styles.container}>
                 <Text style={styles.label}>{t('components.current_wifi.message_wifi_disconnected')}</Text>
