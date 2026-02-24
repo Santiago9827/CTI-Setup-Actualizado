@@ -388,7 +388,7 @@ export const connectWithPassword = async (
 ): Promise<WifiStatus> => {
     // Si tu versión también pide isHidden aquí, pásalo igual
     await Promise.race([
-        (wm.connectToProtectedSSIDPrefix as Function)(ssidPattern, passwd, isWep, false),
+        (wm.connectToProtectedSSIDPrefix as Function)(ssidPattern, passwd, isWep),
         timeoutPromise(),
     ]);
 
