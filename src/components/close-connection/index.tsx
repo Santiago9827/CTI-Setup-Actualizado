@@ -7,8 +7,8 @@ import {
     Paragraph,
     Button
 } from 'react-native-paper';
-import { useLocale } from '../../locales';
 import Theme from '../../theme';
+import { useLocale } from '../../locales';
 
 
 export type CloseConnectionProps = {
