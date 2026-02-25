@@ -229,254 +229,260 @@ export type WifiSelected = { SSID: string };
 const wm: any = WifiManager;
 
 export const calculateSignal = (signal: number) => {
-    if (signal >= -50) return '4';
-    if (signal >= -60) return '3';
-    if (signal >= -67) return '2';
-    if (signal >= -75) return '1';
-    return 'outline';
+  if (signal >= -50) return '4';
+  if (signal >= -60) return '3';
+  if (signal >= -67) return '2';
+  if (signal >= -75) return '1';
+  return 'outline';
 };
 
 const conTimeout = async <T>(promesa: Promise<T>, ms: number, codigo = 'TIMEOUT'): Promise<T> => {
-    return Promise.race([
-        promesa,
-        new Promise<never>((_, reject) => setTimeout(() => reject(new Error(codigo)), ms)),
-    ]) as Promise<T>;
+  return Promise.race([
+    promesa,
+    new Promise<never>((_, reject) => setTimeout(() => reject(new Error(codigo)), ms)),
+  ]) as Promise<T>;
 };
 
 const parsearListaWifi = (raw: any): WifiItem[] => {
-    if (!raw) return [];
-    if (Array.isArray(raw)) return raw as WifiItem[];
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw as WifiItem[];
 
-    if (typeof raw === 'string') {
-        try {
-            const parsed = JSON.parse(raw);
-            return Array.isArray(parsed) ? (parsed as WifiItem[]) : [];
-        } catch {
-            return [];
-        }
+  if (typeof raw === 'string') {
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? (parsed as WifiItem[]) : [];
+    } catch {
+      return [];
     }
+  }
 
-    // Por si viene como objeto raro
-    return [];
-};
-
-export const resolveCurrentWifi = async (): Promise<WifiStatus> => {
-    const wifi = await wm.getCurrentWifiSSID();
-    return { ssid: wifi };
+  // Por si viene como objeto raro
+  return [];
 };
 
 export const isWifiEnabled = async (): Promise<boolean> => {
-    try {
-        if (typeof wm.isEnabled === 'function') return await wm.isEnabled();
-        return true;
-    } catch {
-        return true;
-    }
+  try {
+    if (typeof wm.isEnabled === 'function') return await wm.isEnabled();
+    return true;
+  } catch {
+    return true;
+  }
 };
 
 export const getSSID = async (): Promise<string> => {
-    return wm.getCurrentWifiSSID();
+  return wm.getCurrentWifiSSID();
+};
+
+export const resolveCurrentWifi = async (): Promise<WifiStatus> => {
+  const wifi = await getSSID();
+  return { ssid: wifi };
+};
+
+// ✅ iOS (y a veces Android) tarda en reflejar el SSID real.
+// Esperamos hasta que sea CTINET_...
+const esperarSSIDQueEmpiecePor = async (prefijo: string, timeoutMs = 20000): Promise<string> => {
+  const inicio = Date.now();
+
+  while (Date.now() - inicio < timeoutMs) {
+    try {
+      const ssid = await getSSID();
+      if (ssid && !String(ssid).startsWith('<unknown') && ssid.startsWith(prefijo)) {
+        return ssid;
+      }
+    } catch {}
+
+    await waitForPromise(700);
+  }
+
+  throw new Error('SSID_NOT_DETECTED');
 };
 
 export type updateWifiStatus = (wifi: WifiStatus | null | undefined) => void;
 
 export const getCurrentWifi = async (update: updateWifiStatus) => {
-    const wifiOn = await isWifiEnabled();
-    if (!wifiOn) {
-        // OJO: en Android 10+ encender WiFi por código suele estar restringido,
-        // pero lo dejamos como estaba en tu lógica.
-        try {
-            if (typeof wm.setEnabled === 'function') wm.setEnabled(true);
-        } catch { }
-        update(undefined);
-        return;
-    }
+  const wifiOn = await isWifiEnabled();
 
-    const wifi = await wm.getCurrentWifiSSID();
-    if (!wifi || String(wifi).startsWith('<unknown')) {
-        update(null);
-        return;
-    }
+  if (!wifiOn) {
+    // OJO: en Android 10+ encender WiFi por código suele estar restringido,
+    // pero lo dejamos como estaba en tu lógica.
+    try {
+      if (typeof wm.setEnabled === 'function') wm.setEnabled(true);
+    } catch {}
+    update(undefined);
+    return;
+  }
 
-    update({ ssid: wifi });
+  const wifi = await getSSID();
+  if (!wifi || String(wifi).startsWith('<unknown')) {
+    update(null);
+    return;
+  }
+
+  update({ ssid: wifi });
 };
 
 export type updateWifiList = (wifis: WifiItem[]) => void;
 
 export const loadWifiList = async (update: updateWifiList) => {
-    try {
-        const raw = await conTimeout(wm.loadWifiList(), 6000, 'LOAD_WIFI_TIMEOUT');
-        update(parsearListaWifi(raw));
-    } catch {
-        update([]);
-    }
+  try {
+    const raw = await conTimeout(wm.loadWifiList(), 6000, 'LOAD_WIFI_TIMEOUT');
+    update(parsearListaWifi(raw));
+  } catch {
+    update([]);
+  }
 };
 
 /**
  * Escaneo robusto:
- * - Nunca se queda colgado infinito
- * - Si rescan falla/timeout -> fallback a loadWifiList
- * - Siempre llama update(...) para que tu UI salga de "Buscando..."
+ * - iOS NO permite escaneo de redes -> devolvemos []
+ * - Android: rescan con timeout y fallback
  */
 export const scanWifiList = async (update: updateWifiList) => {
-    if (Platform.OS === 'ios') {
-        update([]);
-        return false;
-    }
+  if (Platform.OS === 'ios') {
+    update([]);
+    return false;
+  }
 
+  try {
+    const raw = await conTimeout(wm.reScanAndLoadWifiList(), 12000, 'RESCAN_TIMEOUT');
+    update(parsearListaWifi(raw));
+    return true;
+  } catch {
     try {
-        const raw = await conTimeout(wm.reScanAndLoadWifiList(), 12000, 'RESCAN_TIMEOUT');
-        update(parsearListaWifi(raw));
-        return true;
-    } catch (e) {
-        // Fallback a lista cacheada
-        try {
-            const raw2 = await conTimeout(wm.loadWifiList(), 6000, 'LOAD_WIFI_TIMEOUT');
-            update(parsearListaWifi(raw2));
-            return false;
-        } catch {
-            update([]); // IMPORTANTÍSIMO: libera tu UI del spinner
-            return false;
-        }
+      const raw2 = await conTimeout(wm.loadWifiList(), 6000, 'LOAD_WIFI_TIMEOUT');
+      update(parsearListaWifi(raw2));
+      return false;
+    } catch {
+      update([]); // IMPORTANTÍSIMO: libera tu UI del spinner
+      return false;
     }
+  }
 };
 
 export const timeoutPromise = (delay = 45000) => {
-    return new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout promise fired')), delay));
+  return new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout promise fired')), delay));
 };
 
-export const connectWithSSID = async (
-    ssid: string,
-    passwd: string,
-    isWep = false
-): Promise<WifiStatus> => {
-    try {
-        const currentSSID = await getSSID();
-        if (currentSSID === ssid) return await resolveCurrentWifi();
-    } catch { }
+// ✅ Android (y iOS si alguna vez le pasas SSID exacto): conectar a SSID exacto
+export const connectWithSSID = async (ssid: string, passwd: string, isWep = false): Promise<WifiStatus> => {
+  try {
+    const currentSSID = await getSSID();
+    if (currentSSID === ssid) return await resolveCurrentWifi();
+  } catch {}
 
-    // “limpia” antes de conectar
-    try {
-        await disconnectFromWifi(ssid);
-    } catch { }
+  try {
+    await disconnectFromWifi(ssid);
+  } catch {}
 
-    await waitForPromise(1500);
+  await waitForPromise(1500);
 
-    try {
-        // Muchas versiones requieren el 4º parámetro isHidden (si no, crashea o falla)
-        await Promise.race([
-            (wm.connectToProtectedSSID as Function)(ssid, passwd, isWep, false),
-            timeoutPromise(),
-        ]);
-    } catch (error: any) {
-        await disconnectFromWifi(ssid);
-        throw new Error(String(error?.message ?? error));
-    }
-
-    try {
-        // a veces falla en Android nuevo; no dejes que esto te tumbe la app
-        if (typeof wm.forceWifiUsage === 'function') await wm.forceWifiUsage(true);
-    } catch { }
-
-    return await resolveCurrentWifi();
-};
-
-export const connectWithPassword = async (
-    ssidPattern: string,
-    passwd: string,
-    isWep = false
-): Promise<WifiStatus> => {
-    // Si tu versión también pide isHidden aquí, pásalo igual
+  try {
+    // connectToProtectedSSID(ssid, password, isWep, isHidden)
     await Promise.race([
-        (wm.connectToProtectedSSIDPrefix as Function)(ssidPattern, passwd, isWep),
-        timeoutPromise(),
+      (wm.connectToProtectedSSID as Function)(ssid, passwd, isWep, false),
+      timeoutPromise(),
     ]);
+  } catch (error: any) {
+    await disconnectFromWifi(ssid);
+    throw new Error(String(error?.message ?? error));
+  }
 
-    return await resolveCurrentWifi();
+  // iOS/Android pueden tardar en actualizar el SSID
+  const ssidFinal = await esperarSSIDQueEmpiecePor(CTI_PREFIX, 20000);
+  return { ssid: ssidFinal };
 };
 
+// ✅ iOS: conectar SIEMPRE por prefijo (3 args) y esperar SSID real CTINET_...
+export const connectWithPassword = async (
+  ssidPattern: string,
+  passwd: string,
+  isWep = false
+): Promise<WifiStatus> => {
+  await Promise.race([
+    // connectToProtectedSSIDPrefix(prefix, password, isWep)  <-- 3 args en tu versión iOS
+    (wm.connectToProtectedSSIDPrefix as Function)(ssidPattern, passwd, isWep),
+    timeoutPromise(),
+  ]);
+
+  const ssidFinal = await esperarSSIDQueEmpiecePor(CTI_PREFIX, 20000);
+  return { ssid: ssidFinal };
+};
+
+// ✅ Tu API pública: en iOS siempre por prefijo, en Android por SSID exacto
 export const connectWithWiFi = async (ssid: string, passwd: string, isWep = false) => {
-    if (Platform.OS === 'ios') return await connectWithPassword(ssid, passwd, isWep);
-    return await connectWithSSID(ssid, passwd, isWep);
+  if (Platform.OS === 'ios') {
+    // forzamos prefijo CTINET siempre
+    return await connectWithPassword(CTI_PREFIX, passwd, isWep);
+  }
+  return await connectWithSSID(ssid, passwd, isWep);
 };
 
 export const disconnectFromWifi = async (ssid?: string) => {
-    if (!ssid) return true;
+  if (!ssid) return true;
 
-    try {
-        if (Platform.OS === 'ios') {
-            if (typeof wm.disconnectFromSSID === 'function') await wm.disconnectFromSSID(ssid);
-            await waitForPromise(3000);
-        } else {
-            try {
-                if (typeof wm.forceWifiUsage === 'function') await wm.forceWifiUsage(false);
-            } catch { }
+  try {
+    if (Platform.OS === 'ios') {
+      if (typeof wm.disconnectFromSSID === 'function') await wm.disconnectFromSSID(ssid);
+      await waitForPromise(1500);
+    } else {
+      try {
+        if (typeof wm.forceWifiUsage === 'function') await wm.forceWifiUsage(false);
+      } catch {}
 
-            if (typeof wm.isRemoveWifiNetwork === 'function') await wm.isRemoveWifiNetwork(ssid);
-            await waitForPromise(1000);
+      if (typeof wm.isRemoveWifiNetwork === 'function') await wm.isRemoveWifiNetwork(ssid);
+      await waitForPromise(1000);
 
-            if (typeof wm.disconnect === 'function') wm.disconnect();
-            await waitForPromise(1500);
-        }
-    } catch { }
+      if (typeof wm.disconnect === 'function') wm.disconnect();
+      await waitForPromise(1500);
+    }
+  } catch {}
 
-    return true;
+  return true;
 };
 
 export const forgetAllCTIWifis = async () => {
-    if (Platform.OS === 'ios') return false;
+  if (Platform.OS === 'ios') return false;
 
-    // Sin isRemoveCTIWifiNetwork, fallback: borra redes CTI detectadas
-    try {
-        const raw = await conTimeout(wm.loadWifiList(), 6000, 'LOAD_WIFI_TIMEOUT');
-        const lista = parsearListaWifi(raw);
-        const ctis = lista.filter((w) => w?.SSID?.startsWith(CTI_PREFIX));
-        for (const w of ctis) {
-            if (w?.SSID) {
-                try {
-                    await wm.isRemoveWifiNetwork(w.SSID);
-                } catch { }
-            }
-        }
-        return true;
-    } catch {
-        return false;
+  try {
+    const raw = await conTimeout(wm.loadWifiList(), 6000, 'LOAD_WIFI_TIMEOUT');
+    const lista = parsearListaWifi(raw);
+    const ctis = lista.filter((w) => w?.SSID?.startsWith(CTI_PREFIX));
+
+    for (const w of ctis) {
+      if (w?.SSID) {
+        try {
+          await wm.isRemoveWifiNetwork(w.SSID);
+        } catch {}
+      }
     }
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 export const openPermissions = () => {
-    // Alternativa universal (sin depender de métodos “custom” del módulo nativo)
-    Linking.openSettings();
+  Linking.openSettings();
 };
 
 export const saveSuggestion = async (showAgain: '0' | '1') => {
-    await AsyncStorage.setItem('SHOW_AGAIN', showAgain);
+  await AsyncStorage.setItem('SHOW_AGAIN', showAgain);
 };
 
 export const getSuggestion = async () => {
-    const showAgain = await AsyncStorage.getItem('SHOW_AGAIN');
-    return showAgain === '1';
+  const showAgain = await AsyncStorage.getItem('SHOW_AGAIN');
+  return showAgain === '1';
 };
-// export const isMiUi = async () => {
-//     if (Platform.OS === 'ios') {
-//         return false;
-//     }
-//     //return await WifiManager.isMiUi();
-// };
+
 export const isMiUi = async (): Promise<boolean> => {
-    if (Platform.OS === 'ios') return false;
-    return false; // default seguro si no tienes el método nativo
+  if (Platform.OS === 'ios') return false;
+  return false;
 };
+
 export const timeoutResolvePromise = (delay = 45000) => {
-    return new Promise((resolve) => {
-        setTimeout(
-            () => {
-                //console.log('Resolve Promise!!!');
-                resolve(new Error('Timeout promise fired'));
-            },
-            delay
-        );
-    });
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(new Error('Timeout promise fired')), delay);
+  });
 };
 
 
